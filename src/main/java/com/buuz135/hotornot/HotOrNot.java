@@ -22,14 +22,19 @@
 package com.buuz135.hotornot;
 
 import com.buuz135.hotornot.proxy.CommonProxy;
+import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
+import net.dries007.tfc.api.capability.heat.Heat;
+import net.dries007.tfc.api.capability.heat.IItemHeat;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
@@ -132,7 +137,7 @@ public class HotOrNot {
                         IItemHandler handler = entityPlayerMP.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
                         for (int i = 0; i < handler.getSlots(); i++) {
                             ItemStack stack = handler.getStackInSlot(i);
-                            if (!stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+                            if (HotConfig.HOT_FLUIDS && !stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
                                 IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
                                 FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
                                 if (fluidStack != null) {
@@ -148,6 +153,19 @@ public class HotOrNot {
                                     }
                                 }
                             }
+                            if (HotConfig.HOT_ITEMS && !stack.isEmpty() && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) {
+                                IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                                if (heatHandlerItem.getTemperature() >= Heat.FAINT_RED.getMin()) {
+                                    ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
+                                    if (offHand.getItem().equals(CommonProxy.MITTS)) {
+                                        offHand.damageItem(1, entityPlayerMP);
+                                    } else if (event.world.getTotalWorldTime() % 10 == 0) {
+                                        entityPlayerMP.attackEntityFrom(DamageSource.ON_FIRE, HotConfig.HOT_DAMAGE);
+                                        entityPlayerMP.dropItem(stack, true, false);
+                                        entityPlayerMP.inventory.deleteStack(stack);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -157,6 +175,14 @@ public class HotOrNot {
 
     @Config(modid = MOD_ID)
     public static class HotConfig {
+        @Config.Comment("If true, damage from hot items will be enabled")
+        public static boolean HOT_ITEMS = true;
+
+        @Config.Comment("How much damage a hot item deals")
+        public static float HOT_DAMAGE = 2;
+
+        @Config.Comment("If true, damage from hot fluids will be enabled")
+        public static boolean HOT_FLUIDS = true;
 
         @Config.Comment("How hot a fluid should be to start burning the player (in kelvin)")
         public static int HOT = 1300;
@@ -164,7 +190,7 @@ public class HotOrNot {
         @Config.Comment("How cold a fluid should be to start adding effects the player (in kelvin)")
         public static int COLD = 273;
 
-        @Config.Comment("If true gaseous effects for the fluids will be enabled")
+        @Config.Comment("If true, gaseous effects for the fluids will be enabled")
         public static boolean GASEOUS = true;
 
         @Config.Comment("If true, the items that contain hot fluid will have a tooltip that will show that they are too hot")
