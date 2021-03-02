@@ -60,7 +60,8 @@ import java.util.function.Predicate;
 @Mod(
 		modid = HotOrNot.MOD_ID,
 		name = HotOrNot.MOD_NAME,
-		version = HotOrNot.VERSION
+		version = HotOrNot.VERSION,
+		dependencies = "required-after:tfc"
 )
 public class HotOrNot
 {
@@ -165,7 +166,7 @@ public class HotOrNot
 												effect.interactPlayer.accept(entityPlayerMP);
 												if (HotConfig.YEET)
 												{
-													entityPlayerMP.dropItem(stack, true, true);
+													entityPlayerMP.dropItem(stack, false, true);
 													entityPlayerMP.inventory.deleteStack(stack);
 												}
 											}
@@ -187,7 +188,7 @@ public class HotOrNot
 										entityPlayerMP.setFire(1);
 										if (HotConfig.YEET)
 										{
-											entityPlayerMP.dropItem(stack, true, true);
+											entityPlayerMP.dropItem(stack, false, true);
 											entityPlayerMP.inventory.deleteStack(stack);
 										}
 									}

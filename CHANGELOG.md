@@ -3,6 +3,7 @@ Hot Or Not
 
 Unreleased
 ----------
+* Reformatting + additional config options (ACGaming)
 * Hot TFC items (ACGaming)
 * Revert "Initial commit for 1.15.2" (Affehund)
 * Initial commit for 1.15.2 (Affehund)
