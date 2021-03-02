@@ -1,14 +1,15 @@
 [
   {
     "modid": "hotornot",
-    "name": "HotOrNot",
+    "name": "HotOrNot for TFC",
     "description": "Is this hot?",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
     "authorList": [
-      "Buuz135"
+      "Buuz135",
+      "ACGaming"
     ],
     "credits": "",
     "logoFile": "",

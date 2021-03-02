@@ -30,11 +30,9 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
@@ -60,172 +58,211 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Mod(
-        modid = HotOrNot.MOD_ID,
-        name = HotOrNot.MOD_NAME,
-        version = HotOrNot.VERSION
+		modid = HotOrNot.MOD_ID,
+		name = HotOrNot.MOD_NAME,
+		version = HotOrNot.VERSION
 )
-public class HotOrNot {
+public class HotOrNot
+{
+	public static final String MOD_ID = "hotornot";
+	public static final String MOD_NAME = "HotOrNot for TFC";
+	public static final String VERSION = "1.1.3-TFC";
 
-    public static final String MOD_ID = "hotornot";
-    public static final String MOD_NAME = "HotOrNot";
-    public static final String VERSION = "1.1.2";
+	@SidedProxy(clientSide = "com.buuz135.hotornot.proxy.ClientProxy", serverSide = "com.buuz135.hotornot.proxy.CommonProxy")
+	public static CommonProxy proxy;
 
-    @SidedProxy(clientSide = "com.buuz135.hotornot.proxy.ClientProxy", serverSide = "com.buuz135.hotornot.proxy.CommonProxy")
-    public static CommonProxy proxy;
+	@Mod.EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		proxy.preInit(event);
+	}
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        proxy.preInit(event);
-    }
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+		proxy.init(event);
+	}
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
-        proxy.init(event);
-    }
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		proxy.postInit(event);
+	}
 
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        proxy.postInit(event);
-    }
+	public enum FluidEffect
+	{
+		HOT(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.HOT, entityPlayerMP -> entityPlayerMP.setFire(1), TextFormatting.RED, "tooltip.hotornot.toohot"),
+		COLD(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.COLD, entityPlayerMP ->
+		{
+			entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
+			entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
+		}, TextFormatting.AQUA, "tooltip.hotornot.toocold"),
+		GAS(fluidStack -> fluidStack.getFluid().isGaseous(fluidStack) && HotConfig.GASEOUS, entityPlayerMP -> entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1)), TextFormatting.YELLOW, "tooltip.hotornot.toolight");
 
-    @Mod.EventBusSubscriber
-    public static class ObjectRegistryHandler {
+		private final Predicate<FluidStack> isValid;
+		private final Consumer<EntityPlayerMP> interactPlayer;
+		private final TextFormatting color;
+		private final String tooltip;
 
-        @SubscribeEvent
-        public static void addItems(RegistryEvent.Register<Item> event) {
-            proxy.registerItems(event);
-        }
+		FluidEffect(Predicate<FluidStack> isValid, Consumer<EntityPlayerMP> interactPlayer, TextFormatting color, String tooltip)
+		{
+			this.isValid = isValid;
+			this.interactPlayer = interactPlayer;
+			this.color = color;
+			this.tooltip = tooltip;
+		}
+	}
 
-        @SubscribeEvent
-        @SideOnly(Side.CLIENT)
-        public static void modelRegistryEvent(ModelRegistryEvent event) {
-            proxy.modelRegistryEvent(event);
-        }
-    }
+	@Mod.EventBusSubscriber
+	public static class ObjectRegistryHandler
+	{
+		@SubscribeEvent
+		public static void addItems(RegistryEvent.Register<Item> event)
+		{
+			proxy.registerItems(event);
+		}
 
-    public enum FluidEffect {
-        HOT(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.HOT, entityPlayerMP -> entityPlayerMP.setFire(1), TextFormatting.RED, "tooltip.hotornot.toohot"),
-        COLD(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.COLD, entityPlayerMP -> {
-            entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
-            entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
-        }, TextFormatting.AQUA, "tooltip.hotornot.toocold"),
-        GAS(fluidStack -> fluidStack.getFluid().isGaseous(fluidStack) && HotConfig.GASEOUS, entityPlayerMP -> entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1)), TextFormatting.YELLOW, "tooltip.hotornot.toolight")
-        ;
+		@SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public static void modelRegistryEvent(ModelRegistryEvent event)
+		{
+			proxy.modelRegistryEvent(event);
+		}
+	}
 
-        private final Predicate<FluidStack> isValid;
-        private final Consumer<EntityPlayerMP> interactPlayer;
-        private final TextFormatting color;
-        private final String tooltip;
+	@Mod.EventBusSubscriber
+	public static class ServerTick
+	{
+		@SubscribeEvent
+		public static void onTick(TickEvent.WorldTickEvent event)
+		{
+			if (event.phase == TickEvent.Phase.START)
+			{
+				for (EntityPlayerMP entityPlayerMP : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
+				{
+					if (!entityPlayerMP.isBurning() && !entityPlayerMP.isCreative() && entityPlayerMP.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
+					{
+						IItemHandler handler = entityPlayerMP.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+						for (int i = 0; i < handler.getSlots(); i++)
+						{
+							ItemStack stack = handler.getStackInSlot(i);
+							if (HotConfig.HOT_FLUIDS && !stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+							{
+								IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+								FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
+								if (fluidStack != null)
+								{
+									for (FluidEffect effect : FluidEffect.values())
+									{
+										if (effect.isValid.test(fluidStack))
+										{
+											ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
+											if (offHand.getItem().equals(CommonProxy.MITTS))
+											{
+												offHand.damageItem(1, entityPlayerMP);
+											} else if (event.world.getTotalWorldTime() % 20 == 0)
+											{
+												effect.interactPlayer.accept(entityPlayerMP);
+												if (HotConfig.YEET)
+												{
+													entityPlayerMP.dropItem(stack, true, true);
+													entityPlayerMP.inventory.deleteStack(stack);
+												}
+											}
+										}
+									}
+								}
+							}
+							if (HotConfig.HOT_ITEMS && !stack.isEmpty() && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
+							{
+								IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+								if (heatHandlerItem.getTemperature() >= Heat.FAINT_RED.getMin())
+								{
+									ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
+									if (offHand.getItem().equals(CommonProxy.MITTS))
+									{
+										offHand.damageItem(1, entityPlayerMP);
+									} else if (event.world.getTotalWorldTime() % 10 == 0)
+									{
+										entityPlayerMP.setFire(1);
+										if (HotConfig.YEET)
+										{
+											entityPlayerMP.dropItem(stack, true, true);
+											entityPlayerMP.inventory.deleteStack(stack);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-        FluidEffect(Predicate<FluidStack> isValid, Consumer<EntityPlayerMP> interactPlayer, TextFormatting color, String tooltip) {
-            this.isValid = isValid;
-            this.interactPlayer = interactPlayer;
-            this.color = color;
-            this.tooltip = tooltip;
-        }
+	@Config(modid = MOD_ID)
+	public static class HotConfig
+	{
+		@Config.Comment("If true, damage from hot items will be enabled")
+		public static boolean HOT_ITEMS = true;
 
-    }
+		@Config.Comment("If true, damage from hot fluids will be enabled")
+		public static boolean HOT_FLUIDS = true;
 
-    @Mod.EventBusSubscriber
-    public static class ServerTick {
+		@Config.Comment("How hot a fluid should be to start burning the player (in kelvin)")
+		public static int HOT = 1300;
 
-        @SubscribeEvent
-        public static void onTick(TickEvent.WorldTickEvent event) {
-            if (event.phase == TickEvent.Phase.START) {
-                for (EntityPlayerMP entityPlayerMP : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers()) {
-                    if (!entityPlayerMP.isBurning() && !entityPlayerMP.isCreative() && entityPlayerMP.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-                        IItemHandler handler = entityPlayerMP.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-                        for (int i = 0; i < handler.getSlots(); i++) {
-                            ItemStack stack = handler.getStackInSlot(i);
-                            if (HotConfig.HOT_FLUIDS && !stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-                                IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                                FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
-                                if (fluidStack != null) {
-                                    for (FluidEffect effect : FluidEffect.values()) {
-                                        if (effect.isValid.test(fluidStack)) {
-                                            ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
-                                            if (offHand.getItem().equals(CommonProxy.MITTS)) {
-                                                offHand.damageItem(1, entityPlayerMP);
-                                            } else if (event.world.getTotalWorldTime() % 20 == 0) {
-                                                effect.interactPlayer.accept(entityPlayerMP);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (HotConfig.HOT_ITEMS && !stack.isEmpty() && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null)) {
-                                IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                                if (heatHandlerItem.getTemperature() >= Heat.FAINT_RED.getMin()) {
-                                    ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
-                                    if (offHand.getItem().equals(CommonProxy.MITTS)) {
-                                        offHand.damageItem(1, entityPlayerMP);
-                                    } else if (event.world.getTotalWorldTime() % 10 == 0) {
-                                        entityPlayerMP.attackEntityFrom(DamageSource.ON_FIRE, HotConfig.HOT_DAMAGE);
-                                        entityPlayerMP.dropItem(stack, true, false);
-                                        entityPlayerMP.inventory.deleteStack(stack);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+		@Config.Comment("How cold a fluid should be to start adding effects the player (in kelvin)")
+		public static int COLD = 273;
 
-    @Config(modid = MOD_ID)
-    public static class HotConfig {
-        @Config.Comment("If true, damage from hot items will be enabled")
-        public static boolean HOT_ITEMS = true;
+		@Config.Comment("If true, gaseous effects for the fluids will be enabled")
+		public static boolean GASEOUS = true;
 
-        @Config.Comment("How much damage a hot item deals")
-        public static float HOT_DAMAGE = 2;
+		@Config.Comment("If true, the items that contain hot fluid will have a tooltip that will show that they are too hot")
+		public static boolean TOOLTIP = true;
 
-        @Config.Comment("If true, damage from hot fluids will be enabled")
-        public static boolean HOT_FLUIDS = true;
+		@Config.Comment("If true, hot items make the player yeet them")
+		public static boolean YEET = true;
 
-        @Config.Comment("How hot a fluid should be to start burning the player (in kelvin)")
-        public static int HOT = 1300;
+		@Config.Comment("Max durability of the mitts")
+		public static int MITTS_DURABILITY = 20 * 60 * 10;
 
-        @Config.Comment("How cold a fluid should be to start adding effects the player (in kelvin)")
-        public static int COLD = 273;
+		@Mod.EventBusSubscriber(modid = MOD_ID)
+		private static class EventHandler
+		{
+			@SubscribeEvent
+			public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event)
+			{
+				if (event.getModID().equals(MOD_ID))
+				{
+					ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
+				}
+			}
+		}
+	}
 
-        @Config.Comment("If true, gaseous effects for the fluids will be enabled")
-        public static boolean GASEOUS = true;
-
-        @Config.Comment("If true, the items that contain hot fluid will have a tooltip that will show that they are too hot")
-        public static boolean TOOLTIP = true;
-
-        @Config.Comment("Max durability of the mitts")
-        public static int MITTS_DURABILITY = 20 * 60 * 10;
-
-        @Mod.EventBusSubscriber(modid = MOD_ID)
-        private static class EventHandler {
-            @SubscribeEvent
-            public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
-                if (event.getModID().equals(MOD_ID)) {
-                    ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
-                }
-            }
-        }
-    }
-
-    @Mod.EventBusSubscriber(value = Side.CLIENT)
-    public static class HotTooltip {
-
-        @SubscribeEvent
-        public static void onTooltip(ItemTooltipEvent event) {
-            ItemStack stack = event.getItemStack();
-            if (HotConfig.TOOLTIP && !stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-                IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
-                if (fluidStack != null) {
-                    for (FluidEffect effect : FluidEffect.values()) {
-                        if (effect.isValid.test(fluidStack))
-                            event.getToolTip().add(effect.color + new TextComponentTranslation(effect.tooltip).getUnformattedText());
-                    }
-                }
-            }
-        }
-    }
+	@Mod.EventBusSubscriber(value = Side.CLIENT)
+	public static class HotTooltip
+	{
+		@SubscribeEvent
+		public static void onTooltip(ItemTooltipEvent event)
+		{
+			ItemStack stack = event.getItemStack();
+			if (HotConfig.TOOLTIP && !stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+			{
+				IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+				FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
+				if (fluidStack != null)
+				{
+					for (FluidEffect effect : FluidEffect.values())
+					{
+						if (effect.isValid.test(fluidStack))
+						{
+							event.getToolTip().add(effect.color + new TextComponentTranslation(effect.tooltip).getUnformattedText());
+						}
+					}
+				}
+			}
+		}
+	}
 }
