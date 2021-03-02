@@ -67,7 +67,7 @@ public class HotOrNot
 {
 	public static final String MOD_ID = "hotornot";
 	public static final String MOD_NAME = "HotOrNot for TFC";
-	public static final String VERSION = "1.1.3-TFC";
+	public static final String VERSION = "1.1.3";
 
 	@SidedProxy(clientSide = "com.buuz135.hotornot.proxy.ClientProxy", serverSide = "com.buuz135.hotornot.proxy.CommonProxy")
 	public static CommonProxy proxy;
