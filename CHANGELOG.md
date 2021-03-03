@@ -3,6 +3,7 @@ Hot Or Not
 
 Unreleased
 ----------
+* Better versioning (ACGaming)
 * Minor fixes (ACGaming)
 * Reformatting + additional config options (ACGaming)
 * Hot TFC items (ACGaming)
