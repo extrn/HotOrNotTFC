@@ -1,8 +1,9 @@
 Hot Or Not
 ==========
 
-Unreleased
-----------
+TFC-1.1.3 (2021-03-03 18:26:18 +0100)
+-------------------------------------
+* Altered recipe (ACGaming)
 * Better versioning (ACGaming)
 * Minor fixes (ACGaming)
 * Reformatting + additional config options (ACGaming)

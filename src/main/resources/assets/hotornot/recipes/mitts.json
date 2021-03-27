@@ -11,7 +11,7 @@
   "key": {
     "W": {
       "type": "forge:ore_dict",
-      "ore": "wool"
+      "ore": "clothHighQuality"
     },
     "L": {
       "type": "forge:ore_dict",
