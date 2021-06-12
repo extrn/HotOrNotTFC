@@ -1,6 +1,10 @@
 Hot Or Not
 ==========
 
+TFC-1.1.4 (2021-03-27 16:42:13 +0100)
+-------------------------------------
+* Item tooltips + configurable temperatures (ACGaming)
+
 TFC-1.1.3 (2021-03-03 18:26:18 +0100)
 -------------------------------------
 * Altered recipe (ACGaming)

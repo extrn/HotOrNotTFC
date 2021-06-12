@@ -10,6 +10,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import com.buuz135.hotornot.HotOrNot;
+import com.buuz135.hotornot.config.HotConfig;
 
 public class MittsItem extends Item
 {
@@ -17,8 +18,8 @@ public class MittsItem extends Item
     {
         setRegistryName(HotOrNot.MOD_ID, "mitts");
         setMaxStackSize(1);
-        setMaxDamage(HotOrNot.HotConfig.MITTS_DURABILITY);
-        setUnlocalizedName(HotOrNot.MOD_ID + ".mitts");
+        setMaxDamage(HotConfig.MITTS_DURABILITY);
+        setTranslationKey(HotOrNot.MOD_ID + ".mitts");
     }
 
     @Override

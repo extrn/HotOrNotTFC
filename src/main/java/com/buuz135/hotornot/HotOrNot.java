@@ -32,14 +32,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -53,6 +50,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import com.buuz135.hotornot.config.HotConfig;
+import com.buuz135.hotornot.config.HotLists;
 import com.buuz135.hotornot.proxy.CommonProxy;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
@@ -67,7 +66,7 @@ public class HotOrNot
 {
     public static final String MOD_ID = "hotornot";
     public static final String MOD_NAME = "HotOrNot for TFC";
-    public static final String VERSION = "1.1.4";
+    public static final String VERSION = "1.1.5";
 
     @SidedProxy(clientSide = "com.buuz135.hotornot.proxy.ClientProxy", serverSide = "com.buuz135.hotornot.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -92,13 +91,13 @@ public class HotOrNot
 
     public enum FluidEffect
     {
-        HOT(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.HOT_FLUID + 273, entityPlayerMP -> entityPlayerMP.setFire(1), TextFormatting.RED, "tooltip.hotornot.toohot"),
-        COLD(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.COLD_FLUID + 273, entityPlayerMP ->
+        HOT(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) >= HotConfig.HOT_FLUID + 273 && HotConfig.HOT_FLUIDS, entityPlayerMP -> entityPlayerMP.setFire(1), TextFormatting.RED, "tooltip.hotornot.toohot"),
+        COLD(fluidStack -> fluidStack.getFluid().getTemperature(fluidStack) <= HotConfig.COLD_FLUID + 273 && HotConfig.COLD_FLUIDS, entityPlayerMP ->
         {
             entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
             entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
         }, TextFormatting.AQUA, "tooltip.hotornot.toocold"),
-        GAS(fluidStack -> fluidStack.getFluid().isGaseous(fluidStack) && HotConfig.GASEOUS, entityPlayerMP -> entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1)), TextFormatting.YELLOW, "tooltip.hotornot.toolight");
+        GAS(fluidStack -> fluidStack.getFluid().isGaseous(fluidStack) && HotConfig.GASEOUS_FLUIDS, entityPlayerMP -> entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1)), TextFormatting.YELLOW, "tooltip.hotornot.toolight");
 
         private final Predicate<FluidStack> isValid;
         private final Consumer<EntityPlayerMP> interactPlayer;
@@ -147,7 +146,9 @@ public class HotOrNot
                         for (int i = 0; i < handler.getSlots(); i++)
                         {
                             ItemStack stack = handler.getStackInSlot(i);
-                            if (HotConfig.HOT_FLUIDS && !stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+
+                            // FLUIDS
+                            if (!stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) && !HotLists.isRemoved(stack))
                             {
                                 IFluidHandlerItem fluidHandlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
                                 FluidStack fluidStack = fluidHandlerItem.drain(1000, false);
@@ -175,10 +176,34 @@ public class HotOrNot
                                     }
                                 }
                             }
-                            if (HotConfig.HOT_ITEMS && !stack.isEmpty() && stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
+
+                            if (HotConfig.HOT_ITEMS && !stack.isEmpty() && !HotLists.isRemoved(stack))
                             {
-                                IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                                if (heatHandlerItem.getTemperature() >= HotConfig.HOT_ITEM)
+                                // TFC ITEMS
+                                if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
+                                {
+                                    IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                                    if (heatHandlerItem.getTemperature() >= HotConfig.HOT_ITEM)
+                                    {
+                                        ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
+                                        if (offHand.getItem().equals(CommonProxy.MITTS))
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                        else if (event.world.getTotalWorldTime() % 10 == 0)
+                                        {
+                                            entityPlayerMP.setFire(1);
+                                            if (HotConfig.YEET)
+                                            {
+                                                entityPlayerMP.dropItem(stack, false, true);
+                                                entityPlayerMP.inventory.deleteStack(stack);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // MANUALLY ADDED ITEMS
+                                else if (HotLists.isHot(stack))
                                 {
                                     ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
                                     if (offHand.getItem().equals(CommonProxy.MITTS))
@@ -195,53 +220,30 @@ public class HotOrNot
                                         }
                                     }
                                 }
+                                else if (HotLists.isCold(stack))
+                                {
+                                    ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
+                                    if (offHand.getItem().equals(CommonProxy.MITTS))
+                                    {
+                                        offHand.damageItem(1, entityPlayerMP);
+                                    }
+                                    else if (event.world.getTotalWorldTime() % 10 == 0)
+                                    {
+                                        entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 21, 1));
+                                        entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 21, 1));
+                                    }
+                                }
+                                else if (HotLists.isGaseous(stack))
+                                {
+                                    if (event.world.getTotalWorldTime() % 10 == 0)
+                                    {
+                                        entityPlayerMP.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 21, 1));
+                                    }
+                                }
+
                             }
                         }
                     }
-                }
-            }
-        }
-    }
-
-    @Config(modid = MOD_ID)
-    public static class HotConfig
-    {
-        @Config.Comment("If true, damage from hot items will be enabled")
-        public static boolean HOT_ITEMS = true;
-
-        @Config.Comment("If true, damage from hot fluids will be enabled")
-        public static boolean HOT_FLUIDS = true;
-
-        @Config.Comment("If true, gaseous effects for the fluids will be enabled")
-        public static boolean GASEOUS = true;
-
-        @Config.Comment("If true, the items that contain hot fluid will have a tooltip that will show that they are too hot")
-        public static boolean TOOLTIP = true;
-
-        @Config.Comment("If true, hot items make the player yeet them")
-        public static boolean YEET = true;
-
-        @Config.Comment("How hot a fluid should be to start burning the player (in Celsius)")
-        public static int HOT_FLUID = 480;
-
-        @Config.Comment("How cold a fluid should be to start adding effects the player (in Celsius)")
-        public static int COLD_FLUID = 0;
-
-        @Config.Comment("How hot an item should be to start burning the player (in Celsius)")
-        public static int HOT_ITEM = 480;
-
-        @Config.Comment("Max durability of the mitts")
-        public static int MITTS_DURABILITY = 20 * 60 * 10;
-
-        @Mod.EventBusSubscriber(modid = MOD_ID)
-        private static class EventHandler
-        {
-            @SubscribeEvent
-            public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event)
-            {
-                if (event.getModID().equals(MOD_ID))
-                {
-                    ConfigManager.sync(MOD_ID, Config.Type.INSTANCE);
                 }
             }
         }
@@ -254,7 +256,7 @@ public class HotOrNot
         public static void onTooltip(ItemTooltipEvent event)
         {
             ItemStack stack = event.getItemStack();
-            if (HotConfig.TOOLTIP && !stack.isEmpty())
+            if (HotConfig.TOOLTIP && !stack.isEmpty() && !HotLists.isRemoved(stack))
             {
                 if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
                 {
@@ -278,6 +280,18 @@ public class HotOrNot
                     {
                         event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
                     }
+                }
+                else if (HotLists.isHot(stack))
+                {
+                    event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
+                }
+                else if (HotLists.isCold(stack))
+                {
+                    event.getToolTip().add(FluidEffect.COLD.color + new TextComponentTranslation(FluidEffect.COLD.tooltip).getUnformattedText());
+                }
+                else if (HotLists.isGaseous(stack))
+                {
+                    event.getToolTip().add(FluidEffect.GAS.color + new TextComponentTranslation(FluidEffect.GAS.tooltip).getUnformattedText());
                 }
             }
         }
