@@ -38,8 +38,14 @@ public class HotConfig
     @Config.Comment("How hot an item should be to start burning the player (in Celsius)")
     public static int HOT_ITEM = 480;
 
-    @Config.Comment("Max durability of the mitts")
-    public static int MITTS_DURABILITY = 20 * 60 * 10;
+    @Config.Comment("Max durability of the wooden tongs, 0 for infinite durability")
+    public static int WOODEN_TONGS_DURABILITY = 1200;
+
+    @Config.Comment("Max durability of the mitts, 0 for infinite durability")
+    public static int MITTS_DURABILITY = 12000;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int IRON_TONGS_DURABILITY = 0;
 
     @Config.Comment("Hot items that are included manually")
     public static String[] HOT_ITEM_ADDITIONS = new String[] {"minecraft:blaze_rod"};

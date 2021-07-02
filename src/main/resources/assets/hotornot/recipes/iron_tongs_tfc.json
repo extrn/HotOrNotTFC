@@ -1,25 +1,25 @@
 {
   "result": {
-    "item": "hotornot:mitts"
+    "item": "hotornot:iron_tongs"
   },
   "pattern": [
-    " W ",
-    "WLW",
-    " WS"
+    "I I",
+    " S ",
+    "W W"
   ],
   "type": "forge:ore_shaped",
   "key": {
-    "W": {
+    "I": {
       "type": "forge:ore_dict",
-      "ore": "wool"
-    },
-    "L": {
-      "type": "forge:ore_dict",
-      "ore": "leather"
+      "ore": "stickWroughtIron"
     },
     "S": {
       "type": "forge:ore_dict",
-      "ore": "string"
+      "ore": "screwWroughtIron"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
     }
   }
 }

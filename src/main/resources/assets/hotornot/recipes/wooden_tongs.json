@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "hotornot:wooden_tongs"
+  },
+  "pattern": [
+    "W W",
+    " W ",
+    "W W"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  }
+}

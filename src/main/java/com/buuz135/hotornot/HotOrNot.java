@@ -24,6 +24,7 @@ package com.buuz135.hotornot;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -38,6 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -60,13 +62,15 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
     modid = HotOrNot.MOD_ID,
     name = HotOrNot.MOD_NAME,
     version = HotOrNot.VERSION,
-    dependencies = "required-after:tfc"
+    dependencies = "after:tfc"
 )
 public class HotOrNot
 {
     public static final String MOD_ID = "hotornot";
-    public static final String MOD_NAME = "HotOrNot for TFC";
-    public static final String VERSION = "1.1.5";
+    public static final String MOD_NAME = "HotOrNot+";
+    public static final String VERSION = "1.1.6";
+
+    public static final CreativeTabs HOTORNOT_TAB = new HotOrNotTab();
 
     @SidedProxy(clientSide = "com.buuz135.hotornot.proxy.ClientProxy", serverSide = "com.buuz135.hotornot.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -161,7 +165,24 @@ public class HotOrNot
                                             ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
                                             if (offHand.getItem().equals(CommonProxy.MITTS))
                                             {
-                                                offHand.damageItem(1, entityPlayerMP);
+                                                if (HotConfig.MITTS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.WOODEN_TONGS))
+                                            {
+                                                if (HotConfig.WOODEN_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                            {
+                                                if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
                                             }
                                             else if (event.world.getTotalWorldTime() % 20 == 0)
                                             {
@@ -179,36 +200,72 @@ public class HotOrNot
 
                             if (HotConfig.HOT_ITEMS && !stack.isEmpty() && !HotLists.isRemoved(stack))
                             {
-                                // TFC ITEMS
-                                if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
+                                if (Loader.isModLoaded("tfc"))
                                 {
-                                    IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                                    if (heatHandlerItem.getTemperature() >= HotConfig.HOT_ITEM)
+                                    // TFC ITEMS
+                                    if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
                                     {
-                                        ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
-                                        if (offHand.getItem().equals(CommonProxy.MITTS))
+                                        IItemHeat heatHandlerItem = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                                        if (heatHandlerItem.getTemperature() >= HotConfig.HOT_ITEM)
                                         {
-                                            offHand.damageItem(1, entityPlayerMP);
-                                        }
-                                        else if (event.world.getTotalWorldTime() % 10 == 0)
-                                        {
-                                            entityPlayerMP.setFire(1);
-                                            if (HotConfig.YEET)
+                                            ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
+                                            if (offHand.getItem().equals(CommonProxy.MITTS))
                                             {
-                                                entityPlayerMP.dropItem(stack, false, true);
-                                                entityPlayerMP.inventory.deleteStack(stack);
+                                                if (HotConfig.MITTS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.WOODEN_TONGS))
+                                            {
+                                                if (HotConfig.WOODEN_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                            {
+                                                if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (event.world.getTotalWorldTime() % 10 == 0)
+                                            {
+                                                entityPlayerMP.setFire(1);
+                                                if (HotConfig.YEET)
+                                                {
+                                                    entityPlayerMP.dropItem(stack, false, true);
+                                                    entityPlayerMP.inventory.deleteStack(stack);
+                                                }
                                             }
                                         }
                                     }
                                 }
-
                                 // MANUALLY ADDED ITEMS
                                 else if (HotLists.isHot(stack))
                                 {
                                     ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
                                     if (offHand.getItem().equals(CommonProxy.MITTS))
                                     {
-                                        offHand.damageItem(1, entityPlayerMP);
+                                        if (HotConfig.MITTS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.WOODEN_TONGS))
+                                    {
+                                        if (HotConfig.WOODEN_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                    {
+                                        if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
                                     }
                                     else if (event.world.getTotalWorldTime() % 10 == 0)
                                     {
@@ -225,7 +282,24 @@ public class HotOrNot
                                     ItemStack offHand = entityPlayerMP.getHeldItemOffhand();
                                     if (offHand.getItem().equals(CommonProxy.MITTS))
                                     {
-                                        offHand.damageItem(1, entityPlayerMP);
+                                        if (HotConfig.MITTS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.WOODEN_TONGS))
+                                    {
+                                        if (HotConfig.WOODEN_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                    {
+                                        if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
                                     }
                                     else if (event.world.getTotalWorldTime() % 10 == 0)
                                     {
@@ -273,14 +347,6 @@ public class HotOrNot
                         }
                     }
                 }
-                else if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
-                {
-                    IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
-                    if (heat.getTemperature() >= HotConfig.HOT_ITEM)
-                    {
-                        event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
-                    }
-                }
                 else if (HotLists.isHot(stack))
                 {
                     event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
@@ -292,6 +358,17 @@ public class HotOrNot
                 else if (HotLists.isGaseous(stack))
                 {
                     event.getToolTip().add(FluidEffect.GAS.color + new TextComponentTranslation(FluidEffect.GAS.tooltip).getUnformattedText());
+                }
+                else if (Loader.isModLoaded("tfc"))
+                {
+                    if (stack.hasCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null))
+                    {
+                        IItemHeat heat = stack.getCapability(CapabilityItemHeat.ITEM_HEAT_CAPABILITY, null);
+                        if (heat.getTemperature() >= HotConfig.HOT_ITEM)
+                        {
+                            event.getToolTip().add(FluidEffect.HOT.color + new TextComponentTranslation(FluidEffect.HOT.tooltip).getUnformattedText());
+                        }
+                    }
                 }
             }
         }

@@ -3,15 +3,15 @@
     "item": "hotornot:mitts"
   },
   "pattern": [
-    " W ",
-    "WLW",
-    " WS"
+    " C ",
+    "CLC",
+    " CS"
   ],
   "type": "forge:ore_shaped",
   "key": {
-    "W": {
+    "C": {
       "type": "forge:ore_dict",
-      "ore": "wool"
+      "ore": "clothHighQuality"
     },
     "L": {
       "type": "forge:ore_dict",

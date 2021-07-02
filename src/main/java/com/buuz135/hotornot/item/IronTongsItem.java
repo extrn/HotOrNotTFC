@@ -12,16 +12,16 @@ import net.minecraft.world.World;
 import com.buuz135.hotornot.HotOrNot;
 import com.buuz135.hotornot.config.HotConfig;
 
-public class MittsItem extends Item
+public class IronTongsItem extends Item
 {
-    public MittsItem()
+    public IronTongsItem()
     {
-        setRegistryName(HotOrNot.MOD_ID, "mitts");
-        setTranslationKey(HotOrNot.MOD_ID + ".mitts");
+        setRegistryName(HotOrNot.MOD_ID, "iron_tongs");
+        setTranslationKey(HotOrNot.MOD_ID + ".iron_tongs");
         setMaxStackSize(1);
-        if (HotConfig.MITTS_DURABILITY != 0)
+        if (HotConfig.IRON_TONGS_DURABILITY != 0)
         {
-            setMaxDamage(HotConfig.MITTS_DURABILITY);
+            setMaxDamage(HotConfig.IRON_TONGS_DURABILITY);
         }
         setCreativeTab(HotOrNot.HOTORNOT_TAB);
     }
@@ -30,7 +30,7 @@ public class MittsItem extends Item
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TextComponentTranslation("item.hotornot.mitts.tooltip").getUnformattedComponentText());
+        tooltip.add(new TextComponentTranslation("item.hotornot.iron_tongs.tooltip").getUnformattedComponentText());
     }
 
     @Override

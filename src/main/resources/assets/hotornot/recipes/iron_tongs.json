@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "hotornot:iron_tongs"
+  },
+  "pattern": [
+    "I I",
+    " I ",
+    "W W"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  }
+}

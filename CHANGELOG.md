@@ -1,6 +1,10 @@
 Hot Or Not
 ==========
 
+TFC-1.1.5 (2021-06-12 16:06:55 +0200)
+-------------------------------------
+* Addable/removable items via config (ACGaming)
+
 TFC-1.1.4 (2021-03-27 16:42:13 +0100)
 -------------------------------------
 * Item tooltips + configurable temperatures (ACGaming)
