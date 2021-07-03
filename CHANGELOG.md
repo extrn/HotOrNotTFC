@@ -1,6 +1,10 @@
 Hot Or Not
 ==========
 
+Unreleased
+----------
+* Tongs, TFC is optional (ACGaming)
+
 TFC-1.1.5 (2021-06-12 16:06:55 +0200)
 -------------------------------------
 * Addable/removable items via config (ACGaming)
