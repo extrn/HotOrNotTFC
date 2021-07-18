@@ -1,6 +1,6 @@
 {
   "result": {
-    "item": "hotornot:iron_tongs"
+    "item": "hotornot:steel_tongs"
   },
   "pattern": [
     "I I",
@@ -11,11 +11,11 @@
   "key": {
     "I": {
       "type": "forge:ore_dict",
-      "ore": "stickWroughtIron"
+      "ore": "stickSteel"
     },
     "S": {
       "type": "forge:ore_dict",
-      "ore": "screwWroughtIron"
+      "ore": "screwSteel"
     },
     "W": {
       "type": "forge:ore_dict",

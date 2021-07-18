@@ -1,7 +1,7 @@
 [
   {
     "modid": "hotornot",
-    "name": "HotOrNot+",
+    "name": "Hot Or Not - TFC",
     "description": "Is this hot?",
     "version": "${version}",
     "mcversion": "${mcversion}",
@@ -13,7 +13,7 @@
       "ACGaming"
     ],
     "credits": "",
-    "logoFile": "",
+    "logoFile": "hotornottfc.png",
     "screenshots": [],
     "dependencies": [
     ]

@@ -1,7 +1,7 @@
 {
   "parent": "hotornot:item/item",
   "textures": {
-    "layer0": "hotornot:items/iron_tongs"
+    "layer0": "hotornot:items/blue_steel_tongs"
   },
   "display": {
     "firstperson_lefthand": {

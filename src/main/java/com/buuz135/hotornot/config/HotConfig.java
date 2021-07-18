@@ -39,13 +39,37 @@ public class HotConfig
     public static int HOT_ITEM = 480;
 
     @Config.Comment("Max durability of the wooden tongs, 0 for infinite durability")
-    public static int WOODEN_TONGS_DURABILITY = 1200;
+    public static int WOODEN_TONGS_DURABILITY = 120;
 
     @Config.Comment("Max durability of the mitts, 0 for infinite durability")
     public static int MITTS_DURABILITY = 12000;
 
     @Config.Comment("Max durability of the tongs, 0 for infinite durability")
-    public static int IRON_TONGS_DURABILITY = 0;
+    public static int COPPER_TONGS_DURABILITY = 1000;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int BRONZE_TONGS_DURABILITY = 2000;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int BISMUTH_BRONZE_TONGS_DURABILITY = 2200;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int BLACK_BRONZE_TONGS_DURABILITY = 1800;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int WROUGHT_IRON_TONGS_DURABILITY = 3000;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int STEEL_TONGS_DURABILITY = 4000;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int BLACK_STEEL_TONGS_DURABILITY = 6000;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int RED_STEEL_TONGS_DURABILITY = 12000;
+
+    @Config.Comment("Max durability of the tongs, 0 for infinite durability")
+    public static int BLUE_STEEL_TONGS_DURABILITY = 12000;
 
     @Config.Comment("Hot items that are included manually")
     public static String[] HOT_ITEM_ADDITIONS = new String[] {"minecraft:blaze_rod"};

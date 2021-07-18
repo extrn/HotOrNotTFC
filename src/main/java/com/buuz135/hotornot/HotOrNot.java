@@ -67,7 +67,7 @@ import net.dries007.tfc.api.capability.heat.IItemHeat;
 public class HotOrNot
 {
     public static final String MOD_ID = "hotornot";
-    public static final String MOD_NAME = "HotOrNot+";
+    public static final String MOD_NAME = "Hot Or Not - TFC";
     public static final String VERSION = "1.1.6";
 
     public static final CreativeTabs HOTORNOT_TAB = new HotOrNotTab();
