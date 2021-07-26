@@ -177,9 +177,65 @@ public class HotOrNot
                                                     offHand.damageItem(1, entityPlayerMP);
                                                 }
                                             }
-                                            else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                            else if (offHand.getItem().equals(CommonProxy.COPPER_TONGS))
                                             {
-                                                if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                                if (HotConfig.COPPER_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BRONZE_TONGS))
+                                            {
+                                                if (HotConfig.BRONZE_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BISMUTH_BRONZE_TONGS))
+                                            {
+                                                if (HotConfig.BISMUTH_BRONZE_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BLACK_BRONZE_TONGS))
+                                            {
+                                                if (HotConfig.BLACK_BRONZE_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.WROUGHT_IRON_TONGS))
+                                            {
+                                                if (HotConfig.WROUGHT_IRON_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.STEEL_TONGS))
+                                            {
+                                                if (HotConfig.STEEL_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BLACK_STEEL_TONGS))
+                                            {
+                                                if (HotConfig.BLACK_STEEL_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.RED_STEEL_TONGS))
+                                            {
+                                                if (HotConfig.RED_STEEL_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BLUE_STEEL_TONGS))
+                                            {
+                                                if (HotConfig.BLUE_STEEL_TONGS_DURABILITY != 0)
                                                 {
                                                     offHand.damageItem(1, entityPlayerMP);
                                                 }
@@ -223,9 +279,65 @@ public class HotOrNot
                                                     offHand.damageItem(1, entityPlayerMP);
                                                 }
                                             }
-                                            else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                            else if (offHand.getItem().equals(CommonProxy.COPPER_TONGS))
                                             {
-                                                if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                                if (HotConfig.COPPER_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BRONZE_TONGS))
+                                            {
+                                                if (HotConfig.BRONZE_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BISMUTH_BRONZE_TONGS))
+                                            {
+                                                if (HotConfig.BISMUTH_BRONZE_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BLACK_BRONZE_TONGS))
+                                            {
+                                                if (HotConfig.BLACK_BRONZE_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.WROUGHT_IRON_TONGS))
+                                            {
+                                                if (HotConfig.WROUGHT_IRON_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.STEEL_TONGS))
+                                            {
+                                                if (HotConfig.STEEL_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BLACK_STEEL_TONGS))
+                                            {
+                                                if (HotConfig.BLACK_STEEL_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.RED_STEEL_TONGS))
+                                            {
+                                                if (HotConfig.RED_STEEL_TONGS_DURABILITY != 0)
+                                                {
+                                                    offHand.damageItem(1, entityPlayerMP);
+                                                }
+                                            }
+                                            else if (offHand.getItem().equals(CommonProxy.BLUE_STEEL_TONGS))
+                                            {
+                                                if (HotConfig.BLUE_STEEL_TONGS_DURABILITY != 0)
                                                 {
                                                     offHand.damageItem(1, entityPlayerMP);
                                                 }
@@ -260,9 +372,65 @@ public class HotOrNot
                                             offHand.damageItem(1, entityPlayerMP);
                                         }
                                     }
-                                    else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                    else if (offHand.getItem().equals(CommonProxy.COPPER_TONGS))
                                     {
-                                        if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                        if (HotConfig.COPPER_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BRONZE_TONGS))
+                                    {
+                                        if (HotConfig.BRONZE_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BISMUTH_BRONZE_TONGS))
+                                    {
+                                        if (HotConfig.BISMUTH_BRONZE_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BLACK_BRONZE_TONGS))
+                                    {
+                                        if (HotConfig.BLACK_BRONZE_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.WROUGHT_IRON_TONGS))
+                                    {
+                                        if (HotConfig.WROUGHT_IRON_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.STEEL_TONGS))
+                                    {
+                                        if (HotConfig.STEEL_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BLACK_STEEL_TONGS))
+                                    {
+                                        if (HotConfig.BLACK_STEEL_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.RED_STEEL_TONGS))
+                                    {
+                                        if (HotConfig.RED_STEEL_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BLUE_STEEL_TONGS))
+                                    {
+                                        if (HotConfig.BLUE_STEEL_TONGS_DURABILITY != 0)
                                         {
                                             offHand.damageItem(1, entityPlayerMP);
                                         }
@@ -294,9 +462,65 @@ public class HotOrNot
                                             offHand.damageItem(1, entityPlayerMP);
                                         }
                                     }
-                                    else if (offHand.getItem().equals(CommonProxy.IRON_TONGS))
+                                    else if (offHand.getItem().equals(CommonProxy.COPPER_TONGS))
                                     {
-                                        if (HotConfig.IRON_TONGS_DURABILITY != 0)
+                                        if (HotConfig.COPPER_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BRONZE_TONGS))
+                                    {
+                                        if (HotConfig.BRONZE_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BISMUTH_BRONZE_TONGS))
+                                    {
+                                        if (HotConfig.BISMUTH_BRONZE_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BLACK_BRONZE_TONGS))
+                                    {
+                                        if (HotConfig.BLACK_BRONZE_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.WROUGHT_IRON_TONGS))
+                                    {
+                                        if (HotConfig.WROUGHT_IRON_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.STEEL_TONGS))
+                                    {
+                                        if (HotConfig.STEEL_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BLACK_STEEL_TONGS))
+                                    {
+                                        if (HotConfig.BLACK_STEEL_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.RED_STEEL_TONGS))
+                                    {
+                                        if (HotConfig.RED_STEEL_TONGS_DURABILITY != 0)
+                                        {
+                                            offHand.damageItem(1, entityPlayerMP);
+                                        }
+                                    }
+                                    else if (offHand.getItem().equals(CommonProxy.BLUE_STEEL_TONGS))
+                                    {
+                                        if (HotConfig.BLUE_STEEL_TONGS_DURABILITY != 0)
                                         {
                                             offHand.damageItem(1, entityPlayerMP);
                                         }

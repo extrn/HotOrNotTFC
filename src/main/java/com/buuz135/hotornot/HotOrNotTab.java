@@ -17,6 +17,7 @@ public class HotOrNotTab extends CreativeTabs
     @Override
     public ItemStack createIcon()
     {
+		//ToDo: Replace with TFC Blue Steel Lava Bucket
         return new ItemStack(Items.LAVA_BUCKET);
     }
 }
