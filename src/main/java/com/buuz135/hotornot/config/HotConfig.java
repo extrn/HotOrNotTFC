@@ -1,10 +1,6 @@
 package com.buuz135.hotornot.config;
 
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import com.buuz135.hotornot.HotOrNot;
 
@@ -38,6 +34,9 @@ public class HotConfig
     @Config.Comment("How hot an item should be to start burning the player (in Celsius)")
     public static int HOT_ITEM = 480;
 
+    @Config.Comment("How often will the durability will be decreased? In Ticks (20 ticks = 1 sec)")
+    public static int DURABILITY_DECREASING = 20;
+
     @Config.Comment("Hot items that are included manually")
     public static String[] HOT_ITEM_ADDITIONS = new String[] {"minecraft:blaze_rod"};
 
@@ -49,17 +48,4 @@ public class HotConfig
 
     @Config.Comment("Items that are excluded")
     public static String[] ITEM_REMOVALS = new String[] {"immersiveengineering:drill", "immersiveengineering:chemthrower", "immersivepetroleum:fluid_diesel", "immersivepetroleum:fluid_gasoline"};
-
-    @Mod.EventBusSubscriber(modid = HotOrNot.MOD_ID)
-    private static class EventHandler
-    {
-        @SubscribeEvent
-        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event)
-        {
-            if (event.getModID().equals(HotOrNot.MOD_ID))
-            {
-                ConfigManager.sync(HotOrNot.MOD_ID, Config.Type.INSTANCE);
-            }
-        }
-    }
 }
