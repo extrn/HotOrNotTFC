@@ -6,6 +6,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -72,6 +73,7 @@ public class CommonEventHandler {
                                             if ((world.getTotalWorldTime() % DURABILITY_DECREASING == 0))
                                             {
                                                 GTUtility.doDamageItem(offHand, 1, false);
+                                                return;
                                             }
                                         }
                                         else if (world.getTotalWorldTime() % 20 == 0)
@@ -105,6 +107,7 @@ public class CommonEventHandler {
                                         if ((world.getTotalWorldTime() % DURABILITY_DECREASING == 0))
                                         {
                                             GTUtility.doDamageItem(offHand, 1, false);
+                                            return;
                                         }
                                     }
                                     else if (world.getTotalWorldTime() % 10 == 0)
@@ -113,6 +116,9 @@ public class CommonEventHandler {
 
                                         if (HotConfig.YEET)
                                         {
+                                            // Только для фикса TFC
+                                            entityPlayer.closeScreen();
+
                                             entityPlayer.inventory.deleteStack(stack);
                                             entityPlayer.dropItem(stack, false, true);
                                             return;
@@ -130,6 +136,7 @@ public class CommonEventHandler {
                                     if ((world.getTotalWorldTime() % DURABILITY_DECREASING == 0))
                                     {
                                         GTUtility.doDamageItem(offHand, 1, false);
+                                        return;
                                     }
                                 }
                                 else if (world.getTotalWorldTime() % 10 == 0)
@@ -152,6 +159,7 @@ public class CommonEventHandler {
                                     if ((world.getTotalWorldTime() % DURABILITY_DECREASING == 0))
                                     {
                                         GTUtility.doDamageItem(offHand, 1, false);
+                                        return;
                                     }
                                 }
                                 else if (world.getTotalWorldTime() % 10 == 0)
