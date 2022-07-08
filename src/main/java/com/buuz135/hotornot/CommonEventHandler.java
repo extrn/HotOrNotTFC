@@ -6,8 +6,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
 import net.dries007.tfc.api.capability.heat.CapabilityItemHeat;
 import net.dries007.tfc.api.capability.heat.IItemHeat;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -18,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -41,14 +39,13 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void onTick(TickEvent.WorldTickEvent event)
+    public static void onTick(TickEvent.PlayerTickEvent event)
     {
-        World world = event.world;
+        EntityPlayer entityPlayer = event.player;
+        World world = entityPlayer.world;
 
-        if (event.phase == TickEvent.Phase.START)
+        if (event.phase == TickEvent.Phase.START && !world.isRemote)
         {
-            for (EntityPlayerMP entityPlayer : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers())
-            {
                 if (!entityPlayer.isBurning() && !entityPlayer.isCreative() && entityPlayer.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
                 {
                     IItemHandler handler = entityPlayer.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -180,7 +177,6 @@ public class CommonEventHandler {
                         }
                     }
                 }
-            }
         }
     }
 }
